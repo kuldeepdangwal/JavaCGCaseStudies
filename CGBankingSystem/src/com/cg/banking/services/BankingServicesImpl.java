@@ -2,6 +2,7 @@ package com.cg.banking.services;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 import com.cg.banking.beans.Account;
 import com.cg.banking.beans.Transaction;
@@ -19,7 +20,7 @@ import com.cg.banking.util.BankingDBUtil;
 public class BankingServicesImpl implements BankingServices{
 
 	private AccountDAO accountDao = new AccountDAOImpl();
-
+	Scanner sc = new Scanner(System.in);
 	@Override
 	public Account openAccount(String accountType, float initBalance)
 			throws InvalidAmountException, InvalidAccountTypeException, BankingServicesDownException {
@@ -56,7 +57,7 @@ public class BankingServicesImpl implements BankingServices{
 			account.setAccountBalance(newAmount);
 			int transactionId = BankingDBUtil.getTRANSACTION_NO_COUNTER();
 			Transaction transaction = new Transaction(transactionId, amount , "DEPOSITED");
-			account.getTransactions().put(1, transaction);
+			account.getTransactions().put(transactionId, transaction);
 			return newAmount;
 		}
 		else 
@@ -67,18 +68,24 @@ public class BankingServicesImpl implements BankingServices{
 	public float withdrawAmount(long accountNo, float amount, int pinNumber) throws InsufficientAmountException,
 	AccountNotFoundException, InvalidPinNumberException, BankingServicesDownException, AccountBlockedException {
 		int count=0;
-		Account accnt = getAccountDetails(accountNo);
-		if(accnt.getAccountStatus().equalsIgnoreCase("ACTIVE")) {
-			if(accnt.getPinNumber()==pinNumber){
-				float newAmount = accnt.getAccountBalance() - amount ; 
-				if(newAmount < 500) 
-					throw new InsufficientAmountException("Balance cannot go below 500");
-				else
-					accnt.setAccountBalance(newAmount);
-				return newAmount;
+		Account account = getAccountDetails(accountNo);
+		if(account.getAccountStatus().equalsIgnoreCase("ACTIVE")){
+			for(int i =0;i<2;i++){
+				if(account.getPinNumber()==pinNumber){
+					float newAmount = account.getAccountBalance() - amount ; 
+					if(newAmount < 500) 
+						throw new InsufficientAmountException("Balance cannot go below 500");
+					else
+						account.setAccountBalance(newAmount);
+					return newAmount;
+				}
+				else{
+					System.out.println("Your PIN is wrong . Kindly enter again");
+					pinNumber = sc.nextInt();
+				}
 			}
-			else 
-				throw new InvalidPinNumberException("YOUR PIN IS WRONG");	
+			account.setAccountStatus("BLOCKED");
+			throw new InvalidPinNumberException("YOU HAVE EXCEEDED PIN ENTERING LIMIT");
 		}
 		else 
 			throw new AccountBlockedException("YOUR ACCOUNT HAS BEEN BLOCKED");
@@ -88,10 +95,13 @@ public class BankingServicesImpl implements BankingServices{
 	public boolean fundTransfer(long accountNoTo, long accountNoFrom, float transferAmount, int pinNumber)
 			throws InsufficientAmountException, AccountNotFoundException, InvalidPinNumberException,
 			BankingServicesDownException, AccountBlockedException {
-		// TODO Auto-generated method stub
-		return false;
+		float balAmount = withdrawAmount(accountNoFrom, transferAmount, pinNumber);
+		float amountAfterDeposit = depositAmount(accountNoTo, transferAmount);
+		if(balAmount!=0.00f) 
+			return true;
+		else
+			return false;
 	}
-
 	@Override
 	public Account getAccountDetails(long accountNo) throws AccountNotFoundException, BankingServicesDownException {
 		Account account = accountDao.findOne(accountNo);
