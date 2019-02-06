@@ -21,7 +21,34 @@ public class MainClass {
 				int choice = sc.nextInt();
 				switch (choice) {
 				case 1:
-					int associateId=services.acceptAssociateDetails("Kuldeep", "Dangwal", "kuldeepd@gmail.com", "RTF", "A4", "CHD9876", 80000, 30000, 1000, 1500, 5896642, "Citi", "citi0001");
+					System.out.println("***********ENTER DETAILS***********\n");
+					System.out.println("Enter First name of associate: ");
+					String firstName = sc.next();
+					System.out.println("Enter Last name of associate: ");
+					String lastName = sc.next();
+					System.out.println("Enter Email Id of associate: ");
+					String emailId = sc.next();
+					System.out.println("Enter Department of associate: ");
+					String department = sc.next();
+					System.out.println("Enter Designation of associate: ");
+					String designation = sc.next();
+					System.out.println("Enter PAN number of associate:  ");
+					String pancard = sc.next();
+					System.out.println("Enter Yearly Investment: ");
+					int yearlyInvestmentUnder80C = sc.nextInt();
+					System.out.println("Enter Basic salary: ");
+					int basicSalary = sc.nextInt();
+					System.out.println("Enter EPF: ");
+					int epf = sc.nextInt();
+					System.out.println("Enter Company PF: ");
+					int companyPf = sc.nextInt();
+					System.out.println("Enter Account number: ");
+					int accountNumber = sc.nextInt();
+					System.out.println("Enter Bank name: ");
+					String bankName = sc.next();
+					System.out.println("Enter IFSC Code: ");
+					String ifscCode = sc.next();
+					int associateId=services.acceptAssociateDetails(firstName, lastName, emailId, department, designation, pancard, yearlyInvestmentUnder80C, basicSalary, epf, companyPf,accountNumber, bankName, ifscCode);
 					System.out.println("Associate Id: "+associateId);
 					break;
 				case 2:

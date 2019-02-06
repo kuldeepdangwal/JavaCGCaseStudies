@@ -180,7 +180,7 @@ public class Associate {
 		return "*************************Associate Details******************************"
 				+ "\nAssociate Id = " + associateId + "\nYearly Investment Under 80C = " + yearlyInvestmentUnder80C
 				+ "\nFirst Name = " + firstName + "\nLast Name = " + lastName + "\nDepartment = " + department
-				+ "\nDesignation = " + designation + "\nPancard = " + pancard + "\nEmailId = " + emailId + "\nSalary = "
-				+ salary + "\nBank Details = " + bankDetails ;
+				+ "\nDesignation = " + designation + "\nPancard = " + pancard + "\nEmailId = " + emailId + "\n*************************Salary******************************"
+				+ salary + "\n*************************Bank Details******************************" + bankDetails ;
 	}	
 }
