@@ -38,7 +38,7 @@ public class StudentServicesImpl implements StudentServices{
 	public Student getStudentDetails(int studentId) throws StudentDetailsNotFoundException {
 		Student student = studentDao.findOne(studentId);
 		if(student==null)
-			throw new StudentDetailsNotFoundException("Studetn Details not found for id = "+ studentId);
+			throw new StudentDetailsNotFoundException("Student Details not found for id = "+ studentId);
 		
 		return student;
 	}
